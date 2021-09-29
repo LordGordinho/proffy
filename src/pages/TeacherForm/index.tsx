@@ -31,17 +31,21 @@ function TeacherForm(): ReactElement {
     ]);
   }
 
-  function handleCreateClass(e: FormEvent) {
+  async function handleCreateClass(e: FormEvent) {
     e.preventDefault();
 
-    api.post('classes', {
+    const response = await api.post('v1/users', {
       name,
       avatar,
       whatsapp,
-      bio,
+      bio
+    })
+
+    api.post('v1/lessons', {
+      user_id: response.data.user.id,
       subject,
       cost: Number(cost),
-      schedule: scheduleItems,
+      schedule_attributes: scheduleItems,
     }).then(() => {
       alert('Cadastro realizado com sucesso!');
 

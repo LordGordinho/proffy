@@ -17,7 +17,7 @@ function TeacherList(): ReactElement {
   async function searchTeachers(e: FormEvent) {
     e.preventDefault();
 
-    const response = await api.get('classes', {
+    const response = await api.get('v1/lessons', {
       params: {
         subject,
         week_day: weekDay,
@@ -25,11 +25,20 @@ function TeacherList(): ReactElement {
       },
     });
 
-    setTeachers(response.data);
+    setTeachers(response.data.lessons);
+  }
+
+  async function searchTeachersIndex(e: FormEvent) {
+    e.preventDefault();
+
+    const response = await api.get('v1/lessons');
+
+    setTeachers(response.data.lessons);
   }
 
   return (
-    <div id="page-teacher-list" className="container">
+    <div id="page-teacher-list" className="container" >
+      {searchTeachersIndex}
       <PageHeader title="Estes são os proffys disponíveis.">
         <form id="search-teachers" onSubmit={searchTeachers}>
           <Select
